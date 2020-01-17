@@ -7,5 +7,6 @@ Benchmarking popular open source Automatic Machine Learning Frameworks. Datasets
 - TPOT
 
 ## Benchmarking process:
-- Time to train 2 mins for each framework 
-- Default parameters wherever applicable 
+- Time to train 2 mins for each framework. 
+- Default parameters wherever applicable.
+- Average over two random seeds.
