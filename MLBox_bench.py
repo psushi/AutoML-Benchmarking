@@ -43,13 +43,16 @@ data = r.train_test_split(['mlb_data/train_'+str(1416)+'.csv','mlb_data/test_'+s
 best = mlb.preprocessing.Drift_thresholder().fit_transform(data)
 
 
-space = {'ne__numerical_strategy':{'search':'choice','space':['mean','median']},
-'ne__categorical_strategy':{'search':'choice','space':[np.NaN]},
+space = {'est__strategy':{'search':'choice','space':['RandomForest','ExtraTrees','LightGBM','Bagging','Tree','AdaBoost']},#linear 
+'ne__numerical_strategy':{'search':'choice','space':['mean','median']},
+'ne__categorical_strategy':{'search':'choice','space':['mode']},
 'ce__strategy':{'search':'choice','space':['label_encoding','entity_embedding','random_projection']},
 'fs__strategy':{'search':'choice','space':['l1','variance','rf_feature_importance']},
-'fs__threshold':{'search':'uniform','space':[0.01,0.3]},
-'est__max_depth':{'search':'choice','space':[3,5,7,9]},
-'est__n_estimators':{'search':'choice','space':[250,500,700,1000]}}
+'fs__threshold':{'search':'uniform','space':[0.01,0.3]},}
+#'est__max_depth':{'search':'choice','space':[3,5,7,9]},}
+#'est__n_estimators':{'search':'choice','space':[250,500,700,1000]}
+#'est__num_leaves':{'search':'choice','space':[7,30,120,500]}}
+
 
 opt = mlb.optimisation.Optimiser(scoring='f1',n_folds=5)
 best = opt.optimise(space,data,40)
