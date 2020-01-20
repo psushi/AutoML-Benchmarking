@@ -17,7 +17,9 @@ TPOT (tree-based pipeline optimisation tool) is a Python Automated Machine Learn
 Once TPOT is finished searching (or you get tired of waiting), it provides you with the Python code for the best pipeline it found so you can tinker with the pipeline from there.TPOT is built on top of scikit-learn, so all of the code it generates should look familiar if you're familiar with scikit-learn.
 
 ## Benchmarking process:
-- Time to train 2 mins for each framework. 
+- Time to train 2 mins for each framework.
+- F1 score for classification and R2 score for regression tasks
+- 8 datasets used for recording results. (4-regression,4-classification)
 - Default parameters wherever applicable.
 - Average over two random seeds.
 - Can be run on any number of datasets from OpenML, when provided with the OpenML data_id
