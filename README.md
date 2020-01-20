@@ -23,3 +23,9 @@ Once TPOT is finished searching (or you get tired of waiting), it provides you w
 - Default parameters wherever applicable.
 - Average over two random seeds.
 - Can be run on any number of datasets from OpenML, when provided with the OpenML data_id
+
+## Recorded data
+- f1 scores
+- r2 scores
+- time for prediction 
+
