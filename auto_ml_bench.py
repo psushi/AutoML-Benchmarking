@@ -11,6 +11,7 @@ warnings.simplefilter(action="ignore", category=DeprecationWarning)
 import time
 import random
 import auto_ml
+from auto_ml import Predictor
 
 columns = ['did','name','NumberOfInstances', 'NumberOfFeatures','NumberOfClasses']
 oml.config.apikey = 'f7b559f93de31b58e136a7a6ca02c3e9'
@@ -26,14 +27,28 @@ data_ids = {
 
 data = oml.datasets.get_dataset(1464)
 X,y,categorical_indicator,attribute_names = data.get_data(target=data.default_target_attribute)
+		
+df1 = pd.DataFrame(X,columns=attribute_names)
+vectorizer = DictVectorizer(sparse=False)
 
-from auto_ml import Predictor
-from auto_ml.utils import get_boston_dataset
+df2=  vectorizer.fit_transform(df1[df1.columns[0:]].to_dict('records'))
+df = pd.DataFrame(df2)
+#df['target'] = y
+le = LabelEncoder()
+y = le.fit_transform(y)
 
-df_train,df_test = get_boston_dataset()
 
 column_descriptions = {
-    'MEDV': 'output',
-    'CHAS': 'categorical'
+	'target':'output'
 }
-print(df_train)
+
+X_train,X_test,y_train,y_test = train_test_split(df,y,train_size=0.75,test_size=0.25,random_state=1)
+X_train['target'] = y_train
+X_test['target'] = y_test
+
+
+ml_predictor  = Predictor(type_of_estimator='classifier',column_descriptions=column_descriptions)
+ml_predictor.train(X_train)
+
+#test_score = ml_predictor.score(X_test,X_test.target)
+#print(test_score)
