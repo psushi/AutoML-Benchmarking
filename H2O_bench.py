@@ -47,6 +47,7 @@ def H2O_benchmarking(data_id,problem_type):
 
 		f1_scores=[]
 		time_to_predict=[]
+		r2_scores=[]
 
 		start_time = time.time()
 		pred = aml.leader.predict(test)
@@ -75,16 +76,16 @@ def bench_scoring(data_ids):
 	prediction_time ={}
 
 	for ID in data_ids['classification']:
-	    scores,time_to_predict = H2O_benchmarking(ID,'classification')
-	    print('score for {} is :{}'.format(ID,scores))
-	    clf_scores_dict[ID] = scores
+	    score,time_to_predict = H2O_benchmarking(ID,'classification')
+	    print('score for {} is :{}'.format(ID,score))
+	    clf_scores_dict[ID] = score
 	    prediction_time[ID] = time_to_predict
 
-	#for ID in data_ids['regression']:
-	 #   score,time_to_predict = H2O_benchmarking(ID,'regression')
-	  #  print('score for {} is :{}'.format(ID,score))
-	   # reg_scores_dict[ID] = score
-	    #prediction_time[ID] = time_to_predict
+	for ID in data_ids['regression']:
+	    score,time_to_predict = H2O_benchmarking(ID,'regression')
+	    print('score for {} is :{}'.format(ID,score))
+	    reg_scores_dict[ID] = score
+	    prediction_time[ID] = time_to_predict
 
 	return clf_scores_dict,reg_scores_dict,prediction_time
 
