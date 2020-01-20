@@ -55,7 +55,7 @@ def tpot_benchmarking(data_id,problem_type):
 
 		for seed in random.sample(range(1,100),2):
 
-			tpot = TPOTClassifier(verbosity=2,max_eval_time_mins=0.04,max_time_mins=1,population_size=15,cv=5,random_state=seed,scoring='f1')
+			tpot = TPOTClassifier(verbosity=2,max_eval_time_mins=0.04,max_time_mins=2,population_size=15,cv=5,random_state=seed,scoring='f1')
 			tpot.fit(df.drop('target',axis=1).loc[training_indices],df.loc[training_indices,'target'])
 			start_time = time.time()
 			preds = tpot.score(df.drop('target',axis=1).loc[validation_indices].values,df.loc[validation_indices, 'target'].values)
@@ -78,7 +78,7 @@ def tpot_benchmarking(data_id,problem_type):
 		time_to_predict=[]
 
 		for seed in random.sample(range(1,100),2):
-			tpot = TPOTRegressor(verbosity=2,max_eval_time_mins=0.04,max_time_mins=1,population_size=15,cv=5,random_state=seed,scoring='r2')
+			tpot = TPOTRegressor(verbosity=2,max_eval_time_mins=0.04,max_time_mins=2,population_size=15,cv=5,random_state=seed,scoring='r2')
 			tpot.fit(df.drop('target',axis=1).loc[training_indices],df.loc[training_indices,'target'])
 			start_time = time.time()
 			preds = tpot.score(df.drop('target',axis=1).loc[validation_indices].values,df.loc[validation_indices, 'target'].values)

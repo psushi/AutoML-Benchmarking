@@ -94,9 +94,9 @@ reg = pd.Series(reg_dict,index=reg_dict.keys())
 clf = pd.Series(clf_dict,index=clf_dict.keys())
 timings = pd.Series(time_dict,index=time_dict.keys())
 
-reg.to_csv('H2O_benchmarking/reg.csv')
-clf.to_csv('H2O_benchmarking/clf.csv')
-timings.to_csv('H2O_benchmarking/time_to_predict.csv')
+reg.to_csv('H2O_benchmarking/reg_h2o.csv')
+clf.to_csv('H2O_benchmarking/clf_h2o.csv')
+timings.to_csv('H2O_benchmarking/time_to_predict_h2o.csv')
 
 
 
