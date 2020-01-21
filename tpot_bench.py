@@ -6,7 +6,7 @@ from sklearn.model_selection import train_test_split
 import warnings
 from tpot import TPOTClassifier
 from tpot import TPOTRegressor
-from sklearn.preprocessing import LabelEncoder 
+from sklearn.preprocessing import LabelEncoder,OneHotEncoder 
 from sklearn.feature_extraction import DictVectorizer
 warnings.simplefilter(action="ignore", category=DeprecationWarning)
 import random
@@ -31,15 +31,21 @@ def tpot_benchmarking(data_id,problem_type):
 
     if problem_type =='classification':
         X,y,categorical_indicator,attribute_names = data.get_data(target=data.default_target_attribute)
-        df1 = pd.DataFrame(X,columns=attribute_names)
-        vectorizer = DictVectorizer(sparse=False)
-        seed=42
-        df2=  vectorizer.fit_transform(df1[df1.columns[0:]].to_dict('records'))
-        df = pd.DataFrame(df2)
-        df['target'] = y
+        
+        X = pd.get_dummies(X)
         le = LabelEncoder()
-        df['target'] = le.fit_transform(df['target'])
-        training_indices,testing_indices = training_indices,validation_indices = train_test_split(df.index.values,stratify=y,train_size=0.75,test_size=0.25)
+        y = le.fit_transform(y)
+        X['target'] =y
+        df = X.copy()
+
+     #   for feature in X.columns:
+     #       if str(X.dtypes[feature])=='category':
+     #           le = LabelEncoder()
+     #           X[feature] = le.fit_transform(X[feature])
+
+        
+
+        training_indices,testing_indices = training_indices,validation_indices = train_test_split(df.index.values,stratify=y,train_size=0.75,test_size=0.25,random_state=42)
         f1_score = []
         time_to_predict =[]
 
@@ -48,7 +54,7 @@ def tpot_benchmarking(data_id,problem_type):
         for seed in random.sample(range(1,100),2):
 
             tpot = TPOTClassifier(verbosity=2,max_eval_time_mins=0.04,max_time_mins=2,population_size=15,cv=5,random_state=seed,scoring='f1')
-            tpot.fit(df.drop('target',axis=1).loc[training_indices],df.loc[training_indices,'target'])
+            tpot.fit(df.drop('target',axis=1).loc[training_indices].values,df.loc[training_indices,'target'].values)
             start_time = time.time()
             preds = tpot.score(df.drop('target',axis=1).loc[validation_indices].values,df.loc[validation_indices, 'target'].values)
             time_to_predict.append(time.time() - start_time)
@@ -59,14 +65,19 @@ def tpot_benchmarking(data_id,problem_type):
 
     if problem_type == 'regression':
         X,y,categorical_indicator,attribute_names = data.get_data(target=data.default_target_attribute)
-        df1 = pd.DataFrame(X,columns=attribute_names)
-        vectorizer = DictVectorizer(sparse=False)
-        seed = 42
+        X = pd.get_dummies(X)
+        
+        
+        X['target'] =y
+       
 
-        df2=  vectorizer.fit_transform(df1[df1.columns[0:]].to_dict('records'))
-        df = pd.DataFrame(df2)
-        df['target'] = y
-        training_indices,testing_indices = training_indices,validation_indices = train_test_split(df.index.values,train_size=0.75,test_size=0.25)
+        #for feature in X.columns:
+        #    if str(X.dtypes[feature])=='category':
+        #        le = LabelEncoder()
+        #        X[feature] = le.fit_transform(X[feature])
+
+        df = X.copy()
+        training_indices,testing_indices = training_indices,validation_indices = train_test_split(df.index.values,train_size=0.75,test_size=0.25,random_state=42)
         r2 = []
         time_to_predict=[]
 
@@ -125,4 +136,7 @@ timings = pd.Series(time_dict,index=time_dict.keys())
 reg.to_csv('TPOT_benchmarking/reg_tpot.csv')
 clf.to_csv('TPOT_benchmarking/clf_tpot.csv')
 timings.to_csv('TPOT_benchmarking/time_to_predict_tpot.csv')
+
+
+
 
