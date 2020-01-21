@@ -21,7 +21,7 @@ data_dict = oml.datasets.list_datasets()
 data_list = pd.DataFrame.from_dict(data_dict,orient='index')
 
 data_ids = {
-                'classification':[1464,40701,1046,1461], #1461 showing error while evaluating together,until then training it separately. 
+                'classification':[1464,40701,1046], #1461 showing error while evaluating together,until then training it separately. 
                 'regression':[196,308,537,344]
             }
 
@@ -38,6 +38,7 @@ def autoskl_benchmarking(data_id,problem_type):
         df1 = pd.DataFrame(X,columns=attribute_names)
        
         feat_type = ['Categorical' if ci else 'Numerical' for ci in categorical_indicator]
+
        
         f1_scores = []
         time_to_predict=[]
@@ -53,8 +54,8 @@ def autoskl_benchmarking(data_id,problem_type):
             X_train, X_test, y_train, y_test =train_test_split(X, y, random_state=1)
 
             automl = autosklearn.classification.AutoSklearnClassifier(
-                                        time_left_for_this_task=60, # sec., how long should this seed fit process run
-                                        per_run_time_limit=15, # sec., each model may only take this long before it's killed
+                                        time_left_for_this_task=120, # sec., how long should this seed fit process run
+                                        per_run_time_limit=30, # sec., each model may only take this long before it's killed
                                         ml_memory_limit=1024, # MB, memory limit imposed on each call to a ML algorithm
                                        
                                         )
@@ -140,20 +141,6 @@ def bench_scoring(data_ids):
     
 
 
-
-clf_dict,reg_dict,time_dict = bench_scoring(data_ids)
-reg = pd.Series(reg_dict,index=reg_dict.keys())
-clf = pd.Series(clf_dict,index=clf_dict.keys())
-timings = pd.Series(time_dict,index=time_dict.keys())
-
-reg.to_csv('autoskl_benchmarking1/reg_autoskl.csv')
-clf.to_csv('autoskl_benchmarking1/clf_autoskl.csv')
-timings.to_csv('autoskl_benchmarking1/time_to_predict_autoskl.csv')
-
-
-
-#score = autoskl_benchmarking(1464,'classification')
-#print('score is:{}'.format(score))
 
 clf_dict,reg_dict,time_dict = bench_scoring(data_ids)
 reg = pd.Series(reg_dict,index=reg_dict.keys())
