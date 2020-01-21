@@ -31,17 +31,8 @@ def tpot_benchmarking(data_id,problem_type):
 
     if problem_type =='classification':
         X,y,categorical_indicator,attribute_names = data.get_data(target=data.default_target_attribute)
-<<<<<<< HEAD
-        df1 = pd.DataFrame(X,columns=attribute_names)
-        vectorizer = DictVectorizer(sparse=False)
-        
-        df2=  vectorizer.fit_transform(df1[df1.columns[0:]].to_dict('records'))
-        df = pd.DataFrame(df2)
-        df['target'] = y
-=======
         
         X = pd.get_dummies(X)
->>>>>>> tpot_optimise
         le = LabelEncoder()
         y = le.fit_transform(y)
         X['target'] =y
@@ -74,16 +65,6 @@ def tpot_benchmarking(data_id,problem_type):
 
     if problem_type == 'regression':
         X,y,categorical_indicator,attribute_names = data.get_data(target=data.default_target_attribute)
-<<<<<<< HEAD
-        df1 = pd.DataFrame(X,columns=attribute_names)
-        vectorizer = DictVectorizer(sparse=False)
-        
-
-        df2=  vectorizer.fit_transform(df1[df1.columns[0:]].to_dict('records'))
-        df = pd.DataFrame(df2)
-        df['target'] = y
-        training_indices,testing_indices = training_indices,validation_indices = train_test_split(df.index.values,train_size=0.75,test_size=0.25)
-=======
         X = pd.get_dummies(X)
         
         
@@ -97,7 +78,6 @@ def tpot_benchmarking(data_id,problem_type):
 
         df = X.copy()
         training_indices,testing_indices = training_indices,validation_indices = train_test_split(df.index.values,train_size=0.75,test_size=0.25,random_state=42)
->>>>>>> tpot_optimise
         r2 = []
         time_to_predict=[]
 
@@ -116,9 +96,9 @@ def tpot_benchmarking(data_id,problem_type):
 
 
 data_ids = {
-				'classification':[1464,40701,1046,1461],
-				'regression':[196,308,537,344]
-			}
+                'classification':[1464,40701,1046,1461],
+                'regression':[196,308,537,344]
+            }
 
 
 
