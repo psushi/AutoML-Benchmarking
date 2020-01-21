@@ -33,7 +33,7 @@ def tpot_benchmarking(data_id,problem_type):
         X,y,categorical_indicator,attribute_names = data.get_data(target=data.default_target_attribute)
         df1 = pd.DataFrame(X,columns=attribute_names)
         vectorizer = DictVectorizer(sparse=False)
-        seed=42
+        
         df2=  vectorizer.fit_transform(df1[df1.columns[0:]].to_dict('records'))
         df = pd.DataFrame(df2)
         df['target'] = y
@@ -61,7 +61,7 @@ def tpot_benchmarking(data_id,problem_type):
         X,y,categorical_indicator,attribute_names = data.get_data(target=data.default_target_attribute)
         df1 = pd.DataFrame(X,columns=attribute_names)
         vectorizer = DictVectorizer(sparse=False)
-        seed = 42
+        
 
         df2=  vectorizer.fit_transform(df1[df1.columns[0:]].to_dict('records'))
         df = pd.DataFrame(df2)
