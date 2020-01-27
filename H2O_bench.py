@@ -41,7 +41,7 @@ def H2O_benchmarking(data_id,problem_type):
 
 	for seed in random.sample(range(0,100),2):
 
-		aml = H2OAutoML(max_runtime_secs=120,seed=1)
+		aml = H2OAutoML(max_runtime_secs=120,seed=seed)
 		aml.train(x=x,y=y,training_frame=train)
 		lb = aml.leaderboard
 
